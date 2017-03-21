@@ -1,49 +1,48 @@
-    $("button").on("click", function() {
-      var animal = $(this).attr("data-animal");
-      var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
-        animal + "&api_key=dc6zaTOxFJmzC&limit=10";
+$(document).ready(function(){ 
 
-      $.ajax({
+// appends new topic to the end of the topics list
+$("#add-topic").on("click", function () {
+    var newTopicBtn = $('<div class="btn btn-primary">');
+    var topicName = $("#new-topics").val();
+    newTopicBtn.addClass("topic");
+    newTopicBtn.attr("data-topic-name", topicName);
+    newTopicBtn.text(topicName);
+    $("#topics").append(newTopicBtn);
+});
+
+var topics = ["FFXIV", "NBA", "Overwatch", "Heavensward", "Emma Watson", "Silicon Valley", "Supa hot fire"];
+
+// for loop to display topics array one button at a time
+for (var i = 0; i < topics.length; i++) {
+    var topicBtn = $('<div class="btn btn-primary">');
+    topicBtn.addClass("topic");
+    topicBtn.attr("data-topic-name", topics[i]);
+    topicBtn.text(topics[i]);
+    $("#topics").append(topicBtn);
+}
+
+$(".btn-primary").on("click", function(){
+    var topic = $(this).attr("data-topic-name");
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + topic + "&api_key=dc6zaTOxFJmzC&limit=10";
+    console.log(topic);
+// retrieves JSON object
+    $.ajax({
         url: queryURL,
         method: "GET"
-      }).done(function(response) {
-        // Step 1: Run this file, click a button, and see what the response object looks like in the browser's console.
-        // Open up the data key, then open up the 0th element. Study the keys and how the JSON is structured.
-
+      }).done(function(response){
         console.log(response);
-        // Step 2: since the image information is inside of the data key,
-        // make a variable named results and set it equal to response.data
+            var gifs = response.data;
+            for(var i = 0; i < gifs.length; i++) {
+                var topicDiv = $("<div>");
+                var p = $("<p>").text("Rating: " + gifs[i].rating);
+                var topicImage = $("<img>");
+                topicImage.attr("src", gifs[i].images.fixed_height.url);
+                topicDiv.append(p);
+                topicDiv.append(topicImage);
+                $("#gif-placement").prepend(topicDiv);
+            }
+        })
+});
 
-        // =============== put step 2 in between these dashes ==================
-        var results = response.data;
+});
 
-        for (var i = 0; i < results.length; i++) {
-
-        // ========================
-        // Step 3: uncomment the for loop above and the closing curly bracket below.
-        // Make a div with jQuery and store it in a variable named animalDiv.
-        var animalDiv = $("<div>");
-        // Make a paragraph tag with jQuery and store it in a variable named p.
-        var p = $("<p>").text("Rating: " + results[i].rating);
-        // Set the inner text of the paragraph to the rating of the image in results[i].
-        var animalImage = $("<img>");
-        // Make an image tag with jQuery and store it in a variable named animalImage.
-        animalImage.attr("src", results[i].images.original_still.url);
-        // Set the image's src to results[i]'s fixed_height.url.
-        // Append the p variable to the animalDiv variable.
-        animalDiv.append(p);
-        // Append the animalImage variable to the animalDiv variable.
-        animalDiv.append(animalImage);
-        // Prepend the animalDiv variable to the element with an id of gifs-appear-here.
-        $("#gifs-appear-here").prepend(animalDiv);
-        // ============= put step 3 in between these dashes ======================
-
-        // ==================================
-        }
-
-        
-
-
-
-      });
-    });

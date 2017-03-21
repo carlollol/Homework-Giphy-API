@@ -1,0 +1,35 @@
+body {
+  font-size: 16px;
+}
+
+h1 {
+  font-weight: 00;
+  margin-bottom: 30px;
+  color: #fff;
+  background: #28b62c;
+  padding: 40px;
+
+}
+
+.container {
+  width: 100%;
+  height: auto;
+  text-align: center;
+  padding: 0px 20px;
+}
+
+.search {
+  padding-top: 20px;
+}
+
+.btn-primary {
+  margin-right:10px;
+  margin-bottom: 10px;
+  background: red;
+  border-color: #8f0c0c;
+}
+
+.btn-primary:hover {
+  background: #28b62c;
+  border-color: #28b62c;
+}
