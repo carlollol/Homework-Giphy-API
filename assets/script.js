@@ -1,18 +1,8 @@
-$(document).ready(function(){ 
-
-// appends new topic to the end of the topics list
-$("#add-topic").on("click", function () {
-    var newTopicBtn = $('<div class="btn btn-primary">');
-    var topicName = $("#new-topics").val();
-    newTopicBtn.addClass("topic");
-    newTopicBtn.attr("data-topic-name", topicName);
-    newTopicBtn.text(topicName);
-    $("#topics").append(newTopicBtn);
-});
+// GIPHY LYFE
 
 var topics = ["FFXIV", "NBA", "Overwatch", "Heavensward", "Emma Watson", "Silicon Valley", "Supa hot fire"];
 
-// for loop to display topics array one button at a time
+// Loop displaying the topics to buttons
 for (var i = 0; i < topics.length; i++) {
     var topicBtn = $('<div class="btn btn-primary">');
     topicBtn.addClass("topic");
@@ -21,11 +11,24 @@ for (var i = 0; i < topics.length; i++) {
     $("#topics").append(topicBtn);
 }
 
-$(".btn-primary").on("click", function(){
+// Adds a new topic at the end of the list
+$("#add-topic").on("click", function (e) {
+    e.preventDefault();
+    topics.push($("#new-topics").val());
+    var newTopicBtn = $('<div class="btn btn-primary">');
+    var topicName = $("#new-topics").val();
+    newTopicBtn.addClass("topic");
+    newTopicBtn.attr("data-topic-name", topicName);
+    newTopicBtn.text(topicName);
+    $("#topics").append(newTopicBtn);
+});
+
+$(document.body).on("click", ".topic", function(){
     var topic = $(this).attr("data-topic-name");
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + topic + "&api_key=dc6zaTOxFJmzC&limit=10";
     console.log(topic);
-// retrieves JSON object
+
+// ajax call to the giphy API
     $.ajax({
         url: queryURL,
         method: "GET"
@@ -42,7 +45,5 @@ $(".btn-primary").on("click", function(){
                 $("#gif-placement").prepend(topicDiv);
             }
         })
-});
-
 });
 
